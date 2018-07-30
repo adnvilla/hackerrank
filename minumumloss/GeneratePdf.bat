@@ -1,0 +1,1 @@
+go tool pprof --pdf main C:\Users\AVILLA~1\AppData\Local\Temp\profile891736911\cpu.pprof > file.pdf
