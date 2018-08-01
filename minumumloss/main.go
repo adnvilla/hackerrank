@@ -4,26 +4,18 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"log"
 	"math"
 	"math/rand"
 	"os"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/pkg/profile"
+	_ "go.uber.org/automaxprocs"
 )
 
 // Complete the minimumLoss function below.
-func minimumLoss(price []int64) int32 {
-
-	f := int64(len(price))
-
-	if f > 100000 {
-		return 0
-	}
-
+func MinimumLoss(price []int64) int32 {
 	result := int32(math.MaxInt32)
 
 	if len(price) == 2 {
@@ -62,7 +54,7 @@ func minimumLoss(price []int64) int32 {
 		next[i-1] = price[i]
 	}
 
-	c := minimumLoss(next)
+	c := MinimumLoss(next)
 
 	if c == 1 {
 		return c
@@ -82,36 +74,41 @@ func minimumLoss(price []int64) int32 {
 
 func main() {
 
-	rand.Seed(time.Now().UTC().UnixNano())
+	// rand.Seed(time.Now().UTC().UnixNano())
 	// CPU profiling by default
-	defer profile.Start().Stop()
-	start := time.Now()
+	defer profile.Start(profile.CPUProfile).Stop()
+	// start := time.Now()
 	//...
 
-	price := make([]int64, 100000)
-	for i := 0; i < len(price)-1; i++ {
-		r := rand.Int63()
+	price := GenerateTest(100000)
 
-		price[i] = r
-	}
-
-	r := minimumLoss(price)
-	elapsed := time.Since(start)
-	log.Printf("time: %s", elapsed)
+	r := MinimumLoss(price)
+	// elapsed := time.Since(start)
+	// log.Printf("time: %s", elapsed)
 
 	fmt.Println(r)
 	// fmt.Println(r)
 }
 
+func GenerateTest(n int) []int64 {
+	price := make([]int64, n)
+	for i := 0; i < len(price)-1; i++ {
+		r := rand.Int63()
+
+		price[i] = r
+	}
+	return price
+}
+
 func main2() {
-	reader := bufio.NewReaderSize(os.Stdin, 1024*1024)
+	reader := bufio.NewReaderSize(os.Stdin, 2048*2048)
 
 	stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
 	checkError(err)
 
 	defer stdout.Close()
 
-	writer := bufio.NewWriterSize(stdout, 1024*1024)
+	writer := bufio.NewWriterSize(stdout, 2048*2048)
 
 	nTemp, err := strconv.ParseInt(readLine(reader), 10, 64)
 	checkError(err)
@@ -127,7 +124,7 @@ func main2() {
 		price = append(price, priceItem)
 	}
 
-	result := minimumLoss(price)
+	result := MinimumLoss(price)
 
 	fmt.Fprintf(writer, "%d\n", result)
 
