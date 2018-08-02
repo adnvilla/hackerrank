@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -12,25 +13,51 @@ import (
 // Complete the queensAttack function below.
 func queensAttack(n int32, k int32, r_q int32, c_q int32, obstacles [][]int32) int32 {
 
-	leftup := getleftup(n, r_q, c_q)
-	left := getleft(n, r_q, c_q)
-	leftdown := getleftdown(n, r_q, c_q)
-	down := getdown(n, r_q, c_q)
-	rigthdown := getrigthdown(n, r_q, c_q)
-	rigth := getrigth(n, r_q, c_q)
-	rigthup := getrigthup(n, r_q, c_q)
-	up := getup(n, r_q, c_q)
+	if k == 0 {
+		return getCleanMoves(n, r_q, c_q)
+	}
 
-	fmt.Println(leftup)
-	fmt.Println(left)
-	fmt.Println(leftdown)
-	fmt.Println(down)
-	fmt.Println(rigthdown)
-	fmt.Println(rigth)
-	fmt.Println(rigthup)
-	fmt.Println(up)
+	// leftup := getleftup(n, r_q, c_q)
+	// left := getleft(n, r_q, c_q)
+	// leftdown := getleftdown(n, r_q, c_q)
+	// down := getdown(n, r_q, c_q)
+	// rigthdown := getrigthdown(n, r_q, c_q)
+	// rigth := getrigth(n, r_q, c_q)
+	// rigthup := getrigthup(n, r_q, c_q)
+	// up := getup(n, r_q, c_q)
 
 	return 1
+}
+
+func getCleanMoves(n int32, x int32, y int32) int32 {
+	leftup := getleftup(n, x, y)
+	left := getleft(n, x, y)
+	leftdown := getleftdown(n, x, y)
+	down := getdown(n, x, y)
+	rigthdown := getrigthdown(n, x, y)
+	rigth := getrigth(n, x, y)
+	rigthup := getrigthup(n, x, y)
+	up := getup(n, x, y)
+
+	dleftup := []int32{int32(math.Abs(float64(x - leftup[0]))), int32(math.Abs(float64(y - leftup[1])))}
+	dleft := []int32{int32(math.Abs(float64(x - left[0]))), int32(math.Abs(float64(y - left[1])))}
+	dleftdown := []int32{int32(math.Abs(float64(x - leftdown[0]))), int32(math.Abs(float64(y - leftdown[1])))}
+	ddown := []int32{int32(math.Abs(float64(x - down[0]))), int32(math.Abs(float64(y - down[1])))}
+	drigthdown := []int32{int32(math.Abs(float64(x - rigthdown[0]))), int32(math.Abs(float64(y - rigthdown[1])))}
+	drigth := []int32{int32(math.Abs(float64(x - rigth[0]))), int32(math.Abs(float64(y - rigth[1])))}
+	drigthup := []int32{int32(math.Abs(float64(x - rigthup[0]))), int32(math.Abs(float64(y - rigthup[1])))}
+	dup := []int32{int32(math.Abs(float64(x - up[0]))), int32(math.Abs(float64(y - up[1])))}
+
+	moves := (dleftup[0] + dleftup[1]) / 2
+	moves += dleft[0] + dleft[1]
+	moves += (dleftdown[0] + dleftdown[1]) / 2
+	moves += ddown[0] + ddown[1]
+	moves += (drigthdown[0] + drigthdown[1]) / 2
+	moves += drigth[0] + drigth[1]
+	moves += (drigthup[0] + drigthup[1]) / 2
+	moves += dup[0] + dup[1]
+
+	return moves
 }
 
 func getFinalPoints(n int32, x int32, y int32) [][]int32 {
@@ -103,7 +130,7 @@ func getleftup(n, x, y int32) []int32 {
 			yy = y - (n - x) + 1
 		}
 	} else {
-		yy = y * 2
+		yy = x - y
 	}
 
 	// if inverse {
@@ -166,6 +193,27 @@ func getrigth(n, x, y int32) []int32 {
 
 func getrigthup(n, x, y int32) []int32 {
 	// =SI(H2*2 > H8,H8,H2*2)
+
+	if x == n {
+		return []int32{x, y}
+	}
+
+	if y == n {
+		return []int32{x, y}
+	}
+
+	if y-x == 0 {
+		return []int32{n, n}
+	}
+
+	invert := false
+	if x-y < 0 { //inverso
+		r := x
+		x = y
+		y = r
+		invert = true
+	}
+
 	var xx int32
 	if y == 1 {
 		xx = n
@@ -183,6 +231,10 @@ func getrigthup(n, x, y int32) []int32 {
 		yy = n
 	} else {
 		yy = y + (n - x)
+	}
+
+	if invert {
+		return []int32{yy, xx}
 	}
 
 	return []int32{xx, yy}
