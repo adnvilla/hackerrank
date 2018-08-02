@@ -156,29 +156,8 @@ func getdown(n, x, y int32) []int32 {
 }
 
 func getrigthdown(n, x, y int32) []int32 {
-	//=SI(I2=H8,H2,SI(I2*2>H8,H2-(H8-I2),H2*2))
-	var xx int32
-	if x == 1 {
-		xx = 1
-	} else if y == n {
-		xx = x
-	} else if y*2 > n {
-		xx = x - (n - y)
-	} else {
-		xx = x * 2
-	}
-
-	//=SI(I2*2 > H8, H8, I2*2)
-	var yy int32
-	if xx == 1 {
-		yy = 1
-	} else if y*2 > n {
-		yy = n
-	} else {
-		yy = y * 2
-	}
-
-	return []int32{xx, yy}
+	r := getleftup(n, x, y)
+	return []int32{r[1], r[0]}
 }
 
 func getrigth(n, x, y int32) []int32 {

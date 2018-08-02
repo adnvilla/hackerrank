@@ -178,6 +178,46 @@ func TestGetdown(t *testing.T) {
 	}
 }
 
+func TestGetrigthdown(t *testing.T) {
+	tests := []struct {
+		n      int32
+		x      int32
+		y      int32
+		expect []int32
+	}{
+		{n: 5, x: 1, y: 1, expect: []int32{1, 1}},
+		{n: 5, x: 2, y: 1, expect: []int32{1, 2}},
+		{n: 5, x: 3, y: 1, expect: []int32{1, 3}},
+		{n: 5, x: 4, y: 1, expect: []int32{1, 4}},
+		{n: 5, x: 5, y: 1, expect: []int32{1, 5}},
+		{n: 5, x: 1, y: 2, expect: []int32{1, 2}},
+		{n: 5, x: 2, y: 2, expect: []int32{1, 3}},
+		{n: 5, x: 3, y: 2, expect: []int32{1, 4}},
+		{n: 5, x: 4, y: 2, expect: []int32{1, 5}},
+		{n: 5, x: 5, y: 2, expect: []int32{2, 5}},
+		{n: 5, x: 1, y: 3, expect: []int32{1, 3}},
+		{n: 5, x: 2, y: 3, expect: []int32{1, 4}},
+		{n: 5, x: 3, y: 3, expect: []int32{1, 5}},
+		{n: 5, x: 4, y: 3, expect: []int32{2, 5}},
+		{n: 5, x: 5, y: 3, expect: []int32{3, 5}},
+		{n: 5, x: 1, y: 4, expect: []int32{1, 4}},
+		{n: 5, x: 2, y: 4, expect: []int32{1, 5}},
+		{n: 5, x: 3, y: 4, expect: []int32{2, 5}},
+		{n: 5, x: 4, y: 4, expect: []int32{3, 5}},
+		{n: 5, x: 5, y: 4, expect: []int32{4, 5}},
+		{n: 5, x: 1, y: 5, expect: []int32{1, 5}},
+		{n: 5, x: 2, y: 5, expect: []int32{2, 5}},
+		{n: 5, x: 3, y: 5, expect: []int32{3, 5}},
+		{n: 5, x: 4, y: 5, expect: []int32{4, 5}},
+		{n: 5, x: 5, y: 5, expect: []int32{5, 5}},
+	}
+
+	for _, test := range tests {
+		response := getrigthdown(test.n, test.x, test.y)
+		assert.Equal(t, test.expect, response, fmt.Sprintf("[%d,%d]", test.x, test.y))
+	}
+}
+
 func TestGetFinalPoints(t *testing.T) {
 	tests := []struct {
 		n      int32
