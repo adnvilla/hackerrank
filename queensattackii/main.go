@@ -60,11 +60,27 @@ func getleftup(n, x, y int32) []int32 {
 	var xx int32
 	var yy int32
 
+	if x-y < 0 { //inverso
+		r := x
+		x = y
+		y = r
+	}
+
 	//SI(H2*2 > H8,H8,H2*2)
-	if x == 1 {
-		xx = 1
-	} else if x*2 > n {
-		xx = n
+	if y == 1 { //No hay esquina
+		xx = x
+	} else if x-y == 0 { //Diagonal principal
+		if x+y < n {
+			xx = x + y - 1
+		} else {
+			xx = n
+		}
+	} else if x*2 > n { //
+		if x+y-1 > n {
+			xx = n
+		} else {
+			xx = x + y - 1
+		}
 	} else {
 		xx = y * 2
 	}
@@ -74,11 +90,25 @@ func getleftup(n, x, y int32) []int32 {
 		yy = 1
 	} else if x == n {
 		yy = y
+	} else if x-y == 0 {
+		if x+y-1 <= n {
+			yy = x - y + 1
+		} else {
+			yy = y - (n - x)
+		}
 	} else if x*2 > n {
-		yy = y - (n - x)
+		if x+y > n {
+			yy = y - (n - x)
+		} else {
+			yy = y - (n - x) + 1
+		}
 	} else {
 		yy = y * 2
 	}
+
+	// if inverse {
+	// 	return []int32{yy, xx}
+	// }
 
 	return []int32{xx, yy}
 }
