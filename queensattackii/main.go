@@ -13,7 +13,11 @@ import (
 // Complete the queensAttack function below.
 func queensAttack(n int32, k int32, r_q int32, c_q int32, obstacles [][]int32) int32 {
 
-	if k == 0 {
+	if n <= 0 || n == 1 || r_q == 0 || c_q == 0 || n > 100000 {
+		return 0
+	}
+
+	if k == 0 && len(obstacles) == 0 {
 		return getCleanMoves(n, r_q, c_q)
 	}
 
@@ -86,10 +90,6 @@ func getFinalPoints(n int32, x int32, y int32) [][]int32 {
 		up,
 	}
 }
-
-// func getMoves(point1, point2 []int32) []int32 {
-// 	return []int32{int32(math.Abs(float64(point2[0] - point1[0]))), int32(math.Abs(float64(point2[1] - point1[1])))}
-// }
 
 func getleftup(n, x, y int32) []int32 {
 	var xx int32
@@ -455,14 +455,14 @@ func getupObstacles(n, x, y int32, obstacles [][]int32) []int32 {
 }
 
 func main() {
-	reader := bufio.NewReaderSize(os.Stdin, 1024*1024)
+	reader := bufio.NewReaderSize(os.Stdin, 2048*2048)
 
 	stdout, err := os.Create(os.Getenv("OUTPUT_PATH"))
 	checkError(err)
 
 	defer stdout.Close()
 
-	writer := bufio.NewWriterSize(stdout, 1024*1024)
+	writer := bufio.NewWriterSize(stdout, 2048*2048)
 
 	nk := strings.Split(readLine(reader), " ")
 
@@ -496,9 +496,9 @@ func main() {
 			obstaclesRow = append(obstaclesRow, obstaclesItem)
 		}
 
-		if len(obstaclesRow) != int(2) {
-			panic("Bad input")
-		}
+		// if len(obstaclesRow) != int(2) {
+		// 	panic("Bad input")
+		// }
 
 		obstacles = append(obstacles, obstaclesRow)
 	}

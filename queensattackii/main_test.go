@@ -32,6 +32,55 @@ func TestAttack3(t *testing.T) {
 	}
 }
 
+func TestAttack4(t *testing.T) {
+	total := queensAttack(0, 0, 0, 0, [][]int32{})
+	if total != 0 {
+		t.Errorf("queensAttack was incorrect, got: %d, want: %d.", total, 0)
+	}
+}
+
+func TestAttack5(t *testing.T) {
+	total := queensAttack(1, 0, 1, 1, [][]int32{})
+	if total != 0 {
+		t.Errorf("queensAttack was incorrect, got: %d, want: %d.", total, 0)
+	}
+}
+
+func TestAttack6(t *testing.T) {
+	total := queensAttack(5, 0, 0, 0, [][]int32{})
+	if total != 0 {
+		t.Errorf("queensAttack was incorrect, got: %d, want: %d.", total, 0)
+	}
+}
+
+func TestAttack7(t *testing.T) {
+	total := queensAttack(2, 0, 1, 1, [][]int32{})
+	if total != 3 {
+		t.Errorf("queensAttack was incorrect, got: %d, want: %d.", total, 3)
+	}
+}
+
+func TestAttack8(t *testing.T) {
+	total := queensAttack(2, 4, 1, 1, [][]int32{{2, 1}, {2, 1}, {2, 2}, {1, 2}})
+	if total != 0 {
+		t.Errorf("queensAttack was incorrect, got: %d, want: %d.", total, 0)
+	}
+}
+
+func TestAttack9(t *testing.T) {
+	total := queensAttack(4, 0, 4, 4, [][]int32{{2, 1}, {2, 1}, {2, 2}, {1, 2}})
+	if total != 7 {
+		t.Errorf("queensAttack was incorrect, got: %d, want: %d.", total, 7)
+	}
+}
+
+func TestAttack10(t *testing.T) {
+	total := queensAttack(100000, 0, 1, 1, [][]int32{})
+	if total != 299997 {
+		t.Errorf("queensAttack was incorrect, got: %d, want: %d.", total, 299997)
+	}
+}
+
 func TestGetleftup(t *testing.T) {
 	tests := []struct {
 		n      int32
