@@ -43,6 +43,7 @@ func TestGetleftup(t *testing.T) {
 		{n: 5, x: 2, y: 4, expect: []int32{5, 1}},
 		{n: 5, x: 3, y: 4, expect: []int32{5, 2}},
 		{n: 5, x: 4, y: 4, expect: []int32{5, 3}},
+		{n: 5, x: 5, y: 4, expect: []int32{5, 4}},
 		{n: 5, x: 1, y: 5, expect: []int32{5, 1}},
 		{n: 5, x: 2, y: 5, expect: []int32{5, 2}},
 		{n: 5, x: 3, y: 5, expect: []int32{5, 3}},
@@ -52,6 +53,46 @@ func TestGetleftup(t *testing.T) {
 
 	for _, test := range tests {
 		response := getleftup(test.n, test.x, test.y)
+		assert.Equal(t, test.expect, response)
+	}
+}
+
+func TestGetleft(t *testing.T) {
+	tests := []struct {
+		n      int32
+		x      int32
+		y      int32
+		expect []int32
+	}{
+		{n: 5, x: 1, y: 1, expect: []int32{1, 1}},
+		{n: 5, x: 2, y: 1, expect: []int32{2, 1}},
+		{n: 5, x: 3, y: 1, expect: []int32{3, 1}},
+		{n: 5, x: 4, y: 1, expect: []int32{4, 1}},
+		{n: 5, x: 5, y: 1, expect: []int32{5, 1}},
+		{n: 5, x: 1, y: 2, expect: []int32{1, 1}},
+		{n: 5, x: 2, y: 2, expect: []int32{2, 1}},
+		{n: 5, x: 3, y: 2, expect: []int32{3, 1}},
+		{n: 5, x: 4, y: 2, expect: []int32{4, 1}},
+		{n: 5, x: 5, y: 2, expect: []int32{5, 1}},
+		{n: 5, x: 1, y: 3, expect: []int32{1, 1}},
+		{n: 5, x: 2, y: 3, expect: []int32{2, 1}},
+		{n: 5, x: 3, y: 3, expect: []int32{3, 1}},
+		{n: 5, x: 4, y: 3, expect: []int32{4, 1}},
+		{n: 5, x: 5, y: 3, expect: []int32{5, 1}},
+		{n: 5, x: 1, y: 4, expect: []int32{1, 1}},
+		{n: 5, x: 2, y: 4, expect: []int32{2, 1}},
+		{n: 5, x: 3, y: 4, expect: []int32{3, 1}},
+		{n: 5, x: 4, y: 4, expect: []int32{4, 1}},
+		{n: 5, x: 5, y: 4, expect: []int32{5, 1}},
+		{n: 5, x: 1, y: 5, expect: []int32{1, 1}},
+		{n: 5, x: 2, y: 5, expect: []int32{2, 1}},
+		{n: 5, x: 3, y: 5, expect: []int32{3, 1}},
+		{n: 5, x: 4, y: 5, expect: []int32{4, 1}},
+		{n: 5, x: 5, y: 5, expect: []int32{5, 1}},
+	}
+
+	for _, test := range tests {
+		response := getleft(test.n, test.x, test.y)
 		assert.Equal(t, test.expect, response)
 	}
 }
