@@ -449,6 +449,41 @@ func TestGetCleanMoves(t *testing.T) {
 	}
 }
 
+func TestGetMoves(t *testing.T) {
+	tests := []struct {
+		n         int32
+		x         int32
+		y         int32
+		obstacles [][]int32
+		expect    int32
+	}{
+		{n: 5, x: 1, y: 1, expect: 8, obstacles: [][]int32{{2, 1}}},
+		{n: 5, x: 1, y: 1, expect: 9, obstacles: [][]int32{{3, 1}, {3, 1}, {3, 1}, {3, 1}}},
+		{n: 5, x: 1, y: 1, expect: 10, obstacles: [][]int32{{4, 1}}},
+		{n: 5, x: 1, y: 1, expect: 11, obstacles: [][]int32{{5, 1}}},
+		{n: 5, x: 1, y: 1, expect: 11, obstacles: [][]int32{{5, 5}}},
+		{n: 5, x: 1, y: 1, expect: 10, obstacles: [][]int32{{4, 4}}},
+		{n: 5, x: 1, y: 1, expect: 9, obstacles: [][]int32{{3, 3}}},
+		{n: 5, x: 1, y: 1, expect: 8, obstacles: [][]int32{{2, 2}}},
+		{n: 5, x: 1, y: 1, expect: 8, obstacles: [][]int32{{1, 2}}},
+		{n: 5, x: 1, y: 1, expect: 9, obstacles: [][]int32{{1, 3}}},
+		{n: 5, x: 1, y: 1, expect: 10, obstacles: [][]int32{{1, 4}}},
+		{n: 5, x: 1, y: 1, expect: 11, obstacles: [][]int32{{1, 5}}},
+		{n: 5, x: 5, y: 5, expect: 11, obstacles: [][]int32{{1, 1}}},
+		{n: 5, x: 3, y: 4, expect: 13, obstacles: [][]int32{{1, 2}}},
+		{n: 60, x: 2, y: 2, expect: 178, obstacles: [][]int32{{1, 2}}},
+		{n: 60, x: 2, y: 2, expect: 179, obstacles: [][]int32{{3, 4}}},
+		{n: 100000, x: 1, y: 1, expect: 299997, obstacles: [][]int32{{3, 2}}},
+		{n: 100000, x: 2, y: 2, expect: 299999, obstacles: [][]int32{{3, 6}}},
+		{n: 100000, x: 2, y: 2, expect: 299998, obstacles: [][]int32{{100000, 100000}}},
+	}
+
+	for _, test := range tests {
+		response := queensAttack(test.n, int32(len(test.obstacles)), test.x, test.y, test.obstacles)
+		assert.Equal(t, test.expect, response, fmt.Sprintf("[%d,%d]", test.x, test.y))
+	}
+}
+
 func TestGetleftupObstacles(t *testing.T) {
 	tests := []struct {
 		n         int32
