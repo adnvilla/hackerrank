@@ -80,7 +80,7 @@ func main() {
 	// start := time.Now()
 	//...
 
-	price := GenerateTest(100000)
+	price := GenerateTest(100)
 
 	r := MinimumLoss(price)
 	// elapsed := time.Since(start)

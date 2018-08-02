@@ -13,7 +13,7 @@ func TestMin(t *testing.T) {
 	rand.Seed(time.Now().UTC().UnixNano())
 	//...
 
-	price := make([]int64, 100000)
+	price := make([]int64, 100)
 	for i := 0; i < len(price)-1; i++ {
 		r := rand.Int63()
 

@@ -17,16 +17,16 @@ func queensAttack(n int32, k int32, r_q int32, c_q int32, obstacles [][]int32) i
 		return getCleanMoves(n, r_q, c_q)
 	}
 
-	// leftup := getleftup(n, r_q, c_q)
-	// left := getleft(n, r_q, c_q)
-	// leftdown := getleftdown(n, r_q, c_q)
-	// down := getdown(n, r_q, c_q)
-	// rigthdown := getrigthdown(n, r_q, c_q)
-	// rigth := getrigth(n, r_q, c_q)
-	// rigthup := getrigthup(n, r_q, c_q)
-	// up := getup(n, r_q, c_q)
+	leftup := getleftupObstacles(n, r_q, c_q, obstacles)
+	left := getleftObstacles(n, r_q, c_q, obstacles)
+	leftdown := getleftdownObstacles(n, r_q, c_q, obstacles)
+	down := getdownObstacles(n, r_q, c_q, obstacles)
+	rigthdown := getrigthdownObstacles(n, r_q, c_q, obstacles)
+	rigth := getrigthObstacles(n, r_q, c_q, obstacles)
+	rigthup := getrigthupObstacles(n, r_q, c_q, obstacles)
+	up := getupObstacles(n, r_q, c_q, obstacles)
 
-	return 1
+	return getMoves(n, r_q, c_q, leftup, left, leftdown, down, rigthdown, rigth, rigthup, up)
 }
 
 func getCleanMoves(n int32, x int32, y int32) int32 {
@@ -39,6 +39,10 @@ func getCleanMoves(n int32, x int32, y int32) int32 {
 	rigthup := getrigthup(n, x, y)
 	up := getup(n, x, y)
 
+	return getMoves(n, x, y, leftup, left, leftdown, down, rigthdown, rigth, rigthup, up)
+}
+
+func getMoves(n int32, x int32, y int32, leftup, left, leftdown, down, rigthdown, rigth, rigthup, up []int32) int32 {
 	dleftup := []int32{int32(math.Abs(float64(x - leftup[0]))), int32(math.Abs(float64(y - leftup[1])))}
 	dleft := []int32{int32(math.Abs(float64(x - left[0]))), int32(math.Abs(float64(y - left[1])))}
 	dleftdown := []int32{int32(math.Abs(float64(x - leftdown[0]))), int32(math.Abs(float64(y - leftdown[1])))}
@@ -82,6 +86,10 @@ func getFinalPoints(n int32, x int32, y int32) [][]int32 {
 		up,
 	}
 }
+
+// func getMoves(point1, point2 []int32) []int32 {
+// 	return []int32{int32(math.Abs(float64(point2[0] - point1[0]))), int32(math.Abs(float64(point2[1] - point1[1])))}
+// }
 
 func getleftup(n, x, y int32) []int32 {
 	var xx int32
@@ -140,8 +148,59 @@ func getleftup(n, x, y int32) []int32 {
 	return []int32{xx, yy}
 }
 
+func getleftupObstacles(n, x, y int32, obstacles [][]int32) []int32 {
+
+	aux := getleftup(n, x, y)
+	var dxaux = int32(math.Abs(float64(x - aux[0])))
+	for _, o := range obstacles {
+		if o[0] <= x || o[1] >= y {
+			continue
+		}
+
+		dx := int32(math.Abs(float64(x - o[0])))
+		dy := int32(math.Abs(float64(y - o[1])))
+		if dx != dy {
+			continue
+		}
+
+		if dx == 1 {
+			return []int32{x, y}
+		}
+
+		if dxaux >= dx {
+			dxaux = dx
+			aux = []int32{o[0] - 1, o[1] + 1}
+		}
+	}
+
+	return aux
+}
+
 func getleft(n, x, y int32) []int32 {
 	return []int32{x, 1}
+}
+
+func getleftObstacles(n, x, y int32, obstacles [][]int32) []int32 {
+	aux := getleft(n, x, y)
+	var dyaux = int32(math.Abs(float64(y - aux[1])))
+	for _, o := range obstacles {
+		if o[0] != x || o[1] >= y {
+			continue
+		}
+
+		dy := int32(math.Abs(float64(y - o[1])))
+
+		if dy == 1 {
+			return []int32{x, y}
+		}
+
+		if dyaux >= dy {
+			dyaux = dy
+			aux = []int32{o[0], o[1] + 1}
+		}
+	}
+
+	return aux
 }
 
 func getleftdown(n, x, y int32) []int32 {
@@ -178,8 +237,58 @@ func getleftdown(n, x, y int32) []int32 {
 	return []int32{xx, yy}
 }
 
+func getleftdownObstacles(n, x, y int32, obstacles [][]int32) []int32 {
+	aux := getleftdown(n, x, y)
+	var dxaux = int32(math.Abs(float64(x - aux[0])))
+	for _, o := range obstacles {
+		if o[0] >= x || o[1] >= y {
+			continue
+		}
+
+		dx := int32(math.Abs(float64(x - o[0])))
+		dy := int32(math.Abs(float64(y - o[1])))
+		if dx != dy {
+			continue
+		}
+
+		if dx == 1 {
+			return []int32{x, y}
+		}
+
+		if dxaux >= dx {
+			dxaux = dx
+			aux = []int32{o[0] + 1, o[1] + 1}
+		}
+	}
+
+	return aux
+}
+
 func getdown(n, x, y int32) []int32 {
 	return []int32{1, y}
+}
+
+func getdownObstacles(n, x, y int32, obstacles [][]int32) []int32 {
+	aux := getdown(n, x, y)
+	var dxaux = int32(math.Abs(float64(x - aux[0])))
+	for _, o := range obstacles {
+		if o[0] >= x || o[1] != y {
+			continue
+		}
+
+		dx := int32(math.Abs(float64(x - o[0])))
+
+		if dx == 1 {
+			return []int32{x, y}
+		}
+
+		if dxaux >= dx {
+			dxaux = dx
+			aux = []int32{o[0] + 1, o[1]}
+		}
+	}
+
+	return aux
 }
 
 func getrigthdown(n, x, y int32) []int32 {
@@ -187,8 +296,58 @@ func getrigthdown(n, x, y int32) []int32 {
 	return []int32{r[1], r[0]}
 }
 
+func getrigthdownObstacles(n, x, y int32, obstacles [][]int32) []int32 {
+	aux := getrigthdown(n, x, y)
+	var dxaux = int32(math.Abs(float64(x - aux[0])))
+	for _, o := range obstacles {
+		if o[0] >= x || o[1] <= y {
+			continue
+		}
+
+		dx := int32(math.Abs(float64(x - o[0])))
+		dy := int32(math.Abs(float64(y - o[1])))
+		if dx != dy {
+			continue
+		}
+
+		if dx == 1 {
+			return []int32{x, y}
+		}
+
+		if dxaux >= dx {
+			dxaux = dx
+			aux = []int32{o[0] + 1, o[1] - 1}
+		}
+	}
+
+	return aux
+}
+
 func getrigth(n, x, y int32) []int32 {
 	return []int32{x, n}
+}
+
+func getrigthObstacles(n, x, y int32, obstacles [][]int32) []int32 {
+	aux := getrigth(n, x, y)
+	var dyaux = int32(math.Abs(float64(y - aux[1])))
+	for _, o := range obstacles {
+		if o[0] != x || o[1] <= y {
+			continue
+		}
+
+		dy := int32(math.Abs(float64(y - o[1])))
+
+		if dy == 1 {
+			return []int32{x, y}
+		}
+
+		if dyaux >= dy {
+			dyaux = dy
+			aux = []int32{o[0], o[1] - 1}
+		}
+	}
+
+	return aux
 }
 
 func getrigthup(n, x, y int32) []int32 {
@@ -240,8 +399,59 @@ func getrigthup(n, x, y int32) []int32 {
 	return []int32{xx, yy}
 }
 
+func getrigthupObstacles(n, x, y int32, obstacles [][]int32) []int32 {
+
+	aux := getrigthup(n, x, y)
+	var dxaux = int32(math.Abs(float64(x - aux[0])))
+	for _, o := range obstacles {
+		if o[0] <= x || o[1] <= y {
+			continue
+		}
+
+		dx := int32(math.Abs(float64(x - o[0])))
+		dy := int32(math.Abs(float64(y - o[1])))
+		if dx != dy {
+			continue
+		}
+
+		if dx == 1 {
+			return []int32{x, y}
+		}
+
+		if dxaux >= dx {
+			dxaux = dx
+			aux = []int32{o[0] - 1, o[1] - 1}
+		}
+	}
+
+	return aux
+}
+
 func getup(n, x, y int32) []int32 {
 	return []int32{n, y}
+}
+
+func getupObstacles(n, x, y int32, obstacles [][]int32) []int32 {
+	aux := getup(n, x, y)
+	var dxaux = int32(math.Abs(float64(x - aux[0])))
+	for _, o := range obstacles {
+		if o[0] <= x || o[1] != y {
+			continue
+		}
+
+		dx := int32(math.Abs(float64(x - o[0])))
+
+		if dx == 1 {
+			return []int32{x, y}
+		}
+
+		if dxaux >= dx {
+			dxaux = dx
+			aux = []int32{o[0] - 1, o[1]}
+		}
+	}
+
+	return aux
 }
 
 func main() {
