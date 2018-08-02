@@ -118,9 +118,19 @@ func getleft(n, x, y int32) []int32 {
 }
 
 func getleftdown(n, x, y int32) []int32 {
+	invert := false
+	if x-y < 0 { //inverso
+		r := x
+		x = y
+		y = r
+		invert = true
+	}
+
 	//=(H2-I2)+1
 	var xx int32
 	if x == 1 {
+		xx = 1
+	} else if x-y == 0 {
 		xx = 1
 	} else {
 		xx = x - y + 1
@@ -129,8 +139,14 @@ func getleftdown(n, x, y int32) []int32 {
 	var yy int32
 	if y == 1 {
 		yy = 1
-	} else {
-		yy = x - y
+	} else if x == 1 {
+		yy = y
+	} else if x-y >= 0 {
+		yy = 1
+	}
+
+	if invert {
+		return []int32{yy, xx}
 	}
 	return []int32{xx, yy}
 }
