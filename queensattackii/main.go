@@ -117,7 +117,7 @@ func getleftup(n, x, y int32) []int32 {
 			xx = x + y - 1
 		}
 	} else {
-		xx = y * 2
+		xx = x + y - 1
 	}
 
 	//=SI(H2=H8,I2,SI(H2*2>H8,I2-(H8-H2),I2*2))
@@ -138,7 +138,7 @@ func getleftup(n, x, y int32) []int32 {
 			yy = y - (n - x) + 1
 		}
 	} else {
-		yy = x - y
+		yy = 1
 	}
 
 	// if inverse {

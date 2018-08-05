@@ -1,7 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"log"
+	"os"
+	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -78,6 +83,53 @@ func TestAttack10(t *testing.T) {
 	total := queensAttack(100000, 0, 1, 1, [][]int32{})
 	if total != 299997 {
 		t.Errorf("queensAttack was incorrect, got: %d, want: %d.", total, 299997)
+	}
+}
+
+func check(e error) {
+	if e != nil {
+		panic(e)
+	}
+}
+
+func TestAttack11(t *testing.T) {
+	file, err := os.Open("input.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	var obstacles [][]int32
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() { // internally, it advances token based on sperator
+		// fmt.Println(scanner.Text()) // token in unicode-char
+		obstaclesRowTemp := strings.Split(scanner.Text(), " ")
+
+		var obstaclesRow []int32
+		for _, obstaclesRowItem := range obstaclesRowTemp {
+			obstaclesItemTemp, err := strconv.ParseInt(obstaclesRowItem, 10, 64)
+			checkError(err)
+			obstaclesItem := int32(obstaclesItemTemp)
+			obstaclesRow = append(obstaclesRow, obstaclesItem)
+		}
+
+		if len(obstaclesRow) != int(2) {
+			panic("Bad input")
+		}
+
+		obstacles = append(obstacles, obstaclesRow)
+	}
+
+	total := queensAttack(obstacles[0][0], obstacles[0][1], obstacles[1][0], obstacles[1][1], obstacles[2:])
+	if total != 307303 {
+		t.Errorf("queensAttack was incorrect, got: %d, want: %d.", total, 307303)
+	}
+}
+
+func TestAttack12(t *testing.T) {
+	total := queensAttack(9, 3, 5, 3, [][]int32{{6, 2}, {2, 6}, {8, 6}, {5, 8}})
+	if total != 20 {
+		t.Errorf("queensAttack was incorrect, got: %d, want: %d.", total, 20)
 	}
 }
 
